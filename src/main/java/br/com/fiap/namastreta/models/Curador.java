@@ -26,10 +26,11 @@ public class Curador extends DadosBase {
     }
 
 
-    public Curador(Long id, String foto, String nome, String descricao, Categoria categoria, String tempoAtuacao) {
-        super(id, foto, nome, descricao);
+    public Curador(String foto, String nome, String descricao, Categoria categoria, String tempoAtuacao) {
+        super(foto, nome, descricao);
         this.categoria = categoria;
         this.tempoAtuacao = tempoAtuacao;
+        setId(getId() + 1);
     }
 
 

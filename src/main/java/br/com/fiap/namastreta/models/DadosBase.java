@@ -15,8 +15,8 @@ public abstract class DadosBase {
      private String descricao;
 
     
-    public DadosBase(Long id, String foto, String nome, String descricao) {
-        this.id = id;
+    public DadosBase(String foto, String nome, String descricao) {
+        //this.id = id;
         this.foto = foto;
         this.nome = nome;
         this.descricao = descricao;

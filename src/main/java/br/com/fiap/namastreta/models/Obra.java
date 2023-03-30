@@ -27,13 +27,14 @@ public class Obra extends DadosBase {
     protected Obra() {
     }
 
-    public Obra(Long id, String foto, String nome, String descricao, Curador curador, Artista artista,
+    public Obra(String foto, String nome, String descricao, Curador curador, Artista artista,
             BigDecimal valor) {
-        super(id, foto, nome, descricao);
+        super(foto, nome, descricao);
         //this.tamanho = tamanho;
         this.curador = curador;
         this.artista = artista;
         this.valor = valor;
+        setId(getId() + 1);
     }
 
     // em caso de promoção!
