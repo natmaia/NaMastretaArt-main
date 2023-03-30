@@ -5,6 +5,7 @@ public enum Categoria {
     ROMANTISMO, 
     NERVOSINHO,
     RAIVOSO,
-    GOSTOSISSIMO;
+    GOSTOSISSIMO,
+    FOFINHO;
 
 }
