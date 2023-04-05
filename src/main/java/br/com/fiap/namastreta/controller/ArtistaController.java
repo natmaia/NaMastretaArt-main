@@ -54,12 +54,12 @@ public class ArtistaController {
     @GetMapping("{id}")
     public ResponseEntity<Artista> show(@PathVariable Long id) {
         log.info("buscando artista com id " + id);
-        var artistaEncontrado = repository.findById(id);
+        var artistaEncontrado = getArtista(id);
 
-        if (artistaEncontrado.isEmpty())
-            return ResponseEntity.notFound().build();
+        // if (artistaEncontrado.isEmpty())
+        //     return ResponseEntity.notFound().build();
 
-        return ResponseEntity.ok(artistaEncontrado.get());
+        return ResponseEntity.ok(artistaEncontrado);
     }
 
     // U - update
@@ -67,12 +67,12 @@ public class ArtistaController {
     public ResponseEntity<Artista> updateById(@PathVariable Long id, @RequestBody Artista art) {
         log.info("atualizando despesa com id " + id);
 
-        var artistaEncontrado = repository.findById(id);
+        var artistaEncontrado =getArtista(id);
 
-        if (artistaEncontrado.isEmpty())
-            return ResponseEntity.notFound().build();
+        // if (artistaEncontrado.isEmpty())
+        //     return ResponseEntity.notFound().build();
 
-        art.setId(id);
+        art.setId(artistaEncontrado.getId());
         repository.save(art);
 
         return ResponseEntity.ok(art);
@@ -85,12 +85,12 @@ public class ArtistaController {
 
         var artistaEncontrado = repository.findById(id);
 
-        if (artistaEncontrado.isEmpty())
-            return ResponseEntity.notFound().build();
+        // if (artistaEncontrado.isEmpty())
+        //     return ResponseEntity.notFound().build();
 
         repository.delete(artistaEncontrado.get());
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(getArtista(id));
 
     }
 
