@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,7 @@ public class Curador extends DadosBase {
     @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
+    @Positive(message = "O tempo de atuação deve ser maior que zero")
     private String tempoAtuacao;
 
     @OneToOne

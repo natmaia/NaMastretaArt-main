@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fiap.namastreta.exception.RestNotFoundException;
 import br.com.fiap.namastreta.models.Obra;
 import br.com.fiap.namastreta.repository.ObraRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/obra")
@@ -39,7 +41,7 @@ public class ObraController {
     // C —- CREATE
 
     @PostMapping
-    public ResponseEntity<Obra> cadastrarObra(@RequestBody Obra obra) {
+    public ResponseEntity<Obra> cadastrarObra(@RequestBody @Valid Obra obra) {
 
         log.info("Cadastrando a obrinha: " + obra);
 
@@ -57,26 +59,26 @@ public class ObraController {
     public ResponseEntity<Obra> retornaObraComId(@PathVariable Long id) {
 
         log.info("Buscando Obra por id: " + id);
-        var obraEncontrada = repository.findById(id);
+        
 
-        if (obraEncontrada.isEmpty())
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(obraEncontrada.get());
+        return ResponseEntity.ok(getObra(id));
     }
 
     // U — UPDATE
 
     @PutMapping("{id}")
-    public ResponseEntity<Obra> update(@PathVariable Long id, @RequestBody Obra obra) {
+    public ResponseEntity<Obra> update(@PathVariable Long id, @RequestBody @Valid Obra obra) {
         log.info("atualizando despesa com id " + id);
-        var obraEncontrada = repository.findById(id);
+        var obraEncontrada = getObra(id);
 
-        if (obraEncontrada.isEmpty())
-            return ResponseEntity.notFound().build();
-
-        obra.setId(id);
+        obra.setId(obraEncontrada.getId());
         repository.save(obra);
+
+
+
+        // if (obraEncontrada.isEmpty())
+        //     return ResponseEntity.notFound().build();
+        // 
 
         return ResponseEntity.ok(obra);
     }
@@ -87,15 +89,19 @@ public class ObraController {
     public ResponseEntity<Obra> deletaObraComId(@PathVariable Long id) {
 
         log.info("apagando obra através do id " + id);
-        var obraEncontrada = repository.findById(id);
+       
+        // if (obraEncontrada.isEmpty())
+        //     return ResponseEntity.notFound().build();
 
-        if (obraEncontrada.isEmpty())
-            return ResponseEntity.notFound().build();
+        // repository.delete(obraEncontrada.get());
 
-        repository.delete(obraEncontrada.get());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(getObra(id));
 
-        return ResponseEntity.noContent().build();
+    }
 
+    private Obra getObra (Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RestNotFoundException("Artista não encontrado"));
     }
 
 }

@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fiap.namastreta.exception.RestNotFoundException;
 import br.com.fiap.namastreta.models.Artista;
 import br.com.fiap.namastreta.repository.ArtistaRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/artista")
@@ -38,7 +40,7 @@ public class ArtistaController {
 
     // C - Create
     @PostMapping
-    public ResponseEntity<Artista> cadastrar(@RequestBody Artista artista) {
+    public ResponseEntity<Artista> cadastrar(@RequestBody @Valid Artista artista) {
         log.info("Cadastrando novo artista: " + artista);
         repository.save(artista);
 
@@ -90,6 +92,11 @@ public class ArtistaController {
 
         return ResponseEntity.noContent().build();
 
+    }
+
+    private Artista getArtista(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RestNotFoundException("Artista não encontrado"));
     }
 
 }

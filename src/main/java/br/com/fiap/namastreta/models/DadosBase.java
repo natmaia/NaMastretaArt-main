@@ -4,15 +4,26 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @MappedSuperclass
 public abstract class DadosBase {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-     private String foto;
-     private String nome;
-     private String descricao;
+
+    @NotBlank(message = "A foto é obrigatória")
+    private String foto;
+
+    @NotBlank(message = "O nome é obrigatório")
+    @Size(max = 50, message = "O nome deve ter no máximo 50 caracteres")
+    private String nome;
+
+    @NotBlank(message = "A descrição é obrigatória")
+    @Size(min = 5, max = 100)
+    private String descricao;
 
     
     public DadosBase(String foto, String nome, String descricao) {

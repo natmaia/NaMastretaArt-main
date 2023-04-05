@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.fiap.namastreta.exception.RestNotFoundException;
 import br.com.fiap.namastreta.models.Curador;
 import br.com.fiap.namastreta.repository.CuradorRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/curador")
@@ -35,7 +37,7 @@ public class CuradorController {
 
     // C -- CREATE
     @PostMapping
-    public ResponseEntity<Curador> create(@RequestBody Curador curador) {
+    public ResponseEntity<Curador> create(@RequestBody @Valid Curador curador) {
         log.info("cadastrando curador: " + curador);
         repository.save(curador);
         return ResponseEntity.status(HttpStatus.CREATED).body(curador);
@@ -55,7 +57,7 @@ public class CuradorController {
 
     // U — UPDATE
     @PutMapping("{id}")
-    public ResponseEntity<Curador> update(@PathVariable Long id, @RequestBody Curador curador) {
+    public ResponseEntity<Curador> update(@PathVariable Long id, @RequestBody @Valid Curador curador) {
         log.info("atualizando curador com id " + id);
         var curadorEncontrado = repository.findById(id);
 
@@ -80,6 +82,11 @@ public class CuradorController {
         repository.delete(curadorEncontrado.get());
 
         return ResponseEntity.noContent().build();
+    }
+
+    private Curador getCurador (Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RestNotFoundException("Artista não encontrado"));
     }
 
 }
