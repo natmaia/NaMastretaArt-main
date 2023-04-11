@@ -5,11 +5,15 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
 import lombok.Getter;
+//import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@Data
+//@NoArgsConstructor
 @Entity
 public class Curador extends DadosBase {
    
